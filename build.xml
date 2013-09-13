@@ -1,0 +1,78 @@
+<project name="algorithm" default="compile" basedir=".">
+    <property name="src" value="src"/>
+    <property name="classes" value="classes"/>
+    <property name="lib" value="lib" />
+    <property name="data" value="data" />
+
+    <property name="jobs" value="JobScheduler"/>
+    <property name="prim" value="Prim"/>
+    <property name="c4" value="Clustering4"/>
+    <property name="bitnode" value="BitNode"/>
+    <property name="hamming" value="Hamming"/>
+
+    <path id="classpath">
+        <fileset dir="${lib}" includes="**/*.jar"/>
+        <pathelement path="${classes}" />
+    </path>
+
+    <target name="init">
+        <tstamp/>
+        <mkdir dir="${classes}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="${src}/week2" destdir="${classes}" includeAntRuntime="false" debug="true" debuglevel="lines,vars,source">
+            <classpath>
+                <path refid="classpath"/>
+            </classpath>
+            <compilerarg value="-Xlint:unchecked"/>
+            <compilerarg value="-proc:none"/>
+        </javac>
+    </target>
+
+    <target name="jobs" depends="compile">
+        <java fork="true" classname="${jobs}">
+            <classpath>
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="prim" depends="compile">
+        <java fork="true" classname="${prim}">
+            <classpath>
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+
+    <target name="c4" depends="compile">
+        <java fork="true" classname="${c4}">
+            <classpath>
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+
+    <target name="bitnode" depends="compile">
+        <java fork="true" classname="${bitnode}">
+            <classpath>
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="hamming" depends="compile">
+        <java fork="true" classname="${hamming}">
+            <classpath>
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="clean">
+        <delete dir="${classes}"/>
+    </target>
+</project>

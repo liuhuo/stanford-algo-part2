@@ -19,6 +19,11 @@ public class BitNode {
 	}
     }
 
+    public BitNode(byte[] origin, int bits) {
+	this.internal = origin;
+	this.bits = bits;
+    }
+
     @Override
     public boolean equals(Object o) {
 	if (this == o) return true;
@@ -67,7 +72,9 @@ public class BitNode {
     }
 
     private BitNode flip(int pos) {
-	BitNode result = new BitNode(this.toString(), this.bits);
+	byte[] dup = new byte[this.bits];
+	System.arraycopy(this.internal,0,dup,0,this.internal.length);
+	BitNode result = new BitNode(dup, this.bits);
 	result.internal[pos] = (byte)(1 - result.internal[pos]);
 	return result;
     }

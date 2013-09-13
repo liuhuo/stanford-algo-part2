@@ -16,7 +16,7 @@ import java.util.Comparator;
 
 
 public class Hamming {
-    private static String graphFile = "data/clustering2.txt";
+    private static String graphFile = "data/clustering_big.txt";
     public static void main(String[] args) {
 	Path graphData = Paths.get(graphFile);
 	Charset charset = Charset.forName("US-ASCII");
@@ -26,14 +26,14 @@ public class Hamming {
 		int vertices = Integer.parseInt(st.nextToken());
 		int bits = Integer.parseInt(st.nextToken());
 		Map<BitNode,Integer> s = new HashMap<>();
-		int idx = 1;
+		int idx =0;
 		while ((line = reader.readLine()) != null) {
 		    BitNode tmp = new BitNode(line,bits);
 		    if (s.containsKey(tmp)) continue;
 		    s.put(tmp,idx++);
 		}
 		System.out.println(s.size());
-		WeightedQuickUnion uf = new WeightedQuickUnion(s.size() + 1);
+		WeightedQuickUnion uf = new WeightedQuickUnion(s.size());
 		for (Map.Entry<BitNode,Integer> e : s.entrySet()) {
 		    BitNode curr = e.getKey();
 		    Integer idx1 = e.getValue();

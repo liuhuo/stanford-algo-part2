@@ -33,6 +33,7 @@ public class Hamming {
 		    s.put(tmp,idx++);
 		}
 		System.out.println(s.size());
+
 	    }
 	catch (IOException e) {
 	    System.err.format("IOException: %s%n",e);

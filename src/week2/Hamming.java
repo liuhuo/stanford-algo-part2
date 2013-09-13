@@ -33,7 +33,22 @@ public class Hamming {
 		    s.put(tmp,idx++);
 		}
 		System.out.println(s.size());
-
+		WeightedQuickUnion uf = new WeightedQuickUnion(s.size() + 1);
+		for (Map.Entry<BitNode,Integer> e : s.entrySet()) {
+		    BitNode curr = e.getKey();
+		    Integer idx1 = e.getValue();
+		    for (BitNode b1 : curr.neighbor1()) {
+			if (s.containsKey(b1)) {
+			    uf.union(idx1, s.get(b1));
+			}
+		    }
+		    for (BitNode b2 : curr.neighbor2()) {
+			if (s.containsKey(b2)) {
+			    uf.union(idx1, s.get(b2));
+			}
+		    }
+		}
+		System.out.println(uf.count());
 	    }
 	catch (IOException e) {
 	    System.err.format("IOException: %s%n",e);

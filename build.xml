@@ -9,6 +9,7 @@
     <property name="c4" value="Clustering4"/>
     <property name="bitnode" value="BitNode"/>
     <property name="hamming" value="Hamming"/>
+    <property name="knapsack1" value="Knapsack1"/>
 
     <path id="classpath">
         <fileset dir="${lib}" includes="**/*.jar"/>
@@ -21,7 +22,7 @@
     </target>
 
     <target name="compile" depends="init">
-        <javac srcdir="${src}/week2" destdir="${classes}" includeAntRuntime="false" debug="true" debuglevel="lines,vars,source">
+        <javac srcdir="${src}/week3" destdir="${classes}" includeAntRuntime="false" debug="true" debuglevel="lines,vars,source">
             <classpath>
                 <path refid="classpath"/>
             </classpath>
@@ -66,6 +67,14 @@
 
     <target name="hamming" depends="compile">
         <java fork="true" classname="${hamming}">
+            <classpath>
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="knapsack1" depends="compile">
+        <java fork="true" classname="${knapsack1}">
             <classpath>
                 <path refid="classpath"/>
             </classpath>

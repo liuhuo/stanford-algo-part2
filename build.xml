@@ -10,6 +10,7 @@
     <property name="bitnode" value="BitNode"/>
     <property name="hamming" value="Hamming"/>
     <property name="knapsack1" value="Knapsack1"/>
+    <property name="knapsack2" value="Knapsack2"/>
 
     <path id="classpath">
         <fileset dir="${lib}" includes="**/*.jar"/>
@@ -75,6 +76,14 @@
 
     <target name="knapsack1" depends="compile">
         <java fork="true" classname="${knapsack1}">
+            <classpath>
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="knapsack2" depends="compile">
+        <java fork="true" classname="${knapsack2}">
             <classpath>
                 <path refid="classpath"/>
             </classpath>

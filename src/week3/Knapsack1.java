@@ -5,10 +5,7 @@ import java.nio.charset.Charset;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.StringTokenizer;
-import java.util.Comparator;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ArrayList;
+
 
 public class Knapsack1 {
     private static String dataFile = "data/knapsack1.txt";

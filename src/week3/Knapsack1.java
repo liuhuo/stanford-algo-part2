@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 
 
 public class Knapsack1 {
-    private static String dataFile = "data/knapsack1.txt";
+    private static String dataFile = "data/a3t1.txt";
 
     public static void main(String[] args) {
 	Path knapsackData = Paths.get(dataFile);
@@ -51,17 +51,17 @@ public class Knapsack1 {
     }
 }
 
-class Item {
-    int value;
-    int weight;
+// class Item {
+//     int value;
+//     int weight;
 
-    public Item(int value, int weight) {
-	this.value = value;
-	this.weight = weight;
-    }
+//     public Item(int value, int weight) {
+// 	this.value = value;
+// 	this.weight = weight;
+//     }
 
-    @Override
-    public String toString() {
-	return value + " " + weight;
-    }
-}
+//     @Override
+//     public String toString() {
+// 	return value + " " + weight;
+//     }
+// }

@@ -11,50 +11,64 @@ import java.util.HashMap;
 public class Knapsack2 {
     private static String dataFile = "data/knapsack1.txt";
 
-    private static long computeEntry(Item[] items, int i, int x, Map<CacheIdx,Long> cache) {
+    private static void computeEntry(Item[] items, int i, int x, Map<CacheIdx,Integer> cache) {
 
-	long result;
+	Item item = items[i];
+	CacheIdx curr = new CacheIdx(i,x);
 	if (i == 0) {
-	    result = 0;
+	    cache.put(curr,0);
+	}
+	else if (item.weight > x) {
+	    CacheIdx idx = new CacheIdx(i - 1, x);
+	    if (!cache.containsKey(idx)) {
+		computeEntry(items,i - 1, x, cache);
+	    }
+	    cache.put(curr, cache.get(idx));
 	}
 	else {
-	    Item tmp = items[i];
-	    if (tmp.weight > x) {
-		CacheIdx idx = new CacheIdx(i - 1, x);
-		if (cache.containsKey(idx)) {
-		    result = cache.get(idx);
-		}
-		else {
-		    result = computeEntry(items, i-1,x,cache);
-		    cache.put(new CacheIdx(i,x), result);
-		    //		    cache.put(idx, result);
-		}
+	    CacheIdx idx1 = new CacheIdx(i - 1, x);
+	    CacheIdx idx2 = new CacheIdx(i - 1, x - item.weight);
+	    if (!cache.containsKey(idx1)) {
+		computeEntry(items, i - 1, x, cache);
 	    }
-	    else {
-		CacheIdx idx1 = new CacheIdx(i-1, x);
-		CacheIdx idx2 = new CacheIdx(i-1, x - tmp.weight);
-		long val1,val2;
-		if (cache.containsKey(idx1)) {
-		    val1 = cache.get(idx1);
-		}
-		else {
-		    val1 = computeEntry(items, i -1, x, cache);
-		    //cache.put(idx1,val1);
-		}
+	    if (!cache.containsKey(idx2)) {
+		computeEntry(items, i - 1, x - item.weight, cache);
+	    }
 
-		if (cache.containsKey(idx2)) {
-		    val2 = cache.get(idx2);
-		}
-		else {
-		    val2 = computeEntry(items, i -1, x - tmp.weight, cache);
-		    //cache.put(idx2,val2);
-		}
-		result = Math.max(val1,val2 + tmp.value);
-		cache.put(new CacheIdx(i,x), result);
-	    }
+	    int candidate1 = cache.get(idx1);
+	    int candidate2 = cache.get(idx2);
+	    cache.put(curr, Math.max(candidate1,candidate2+item.value));
 	}
-	//	System.out.println(i + " " + x + " "+result);
-	return result;
+	//System.out.println(i + " " + x + " " + cache.get(curr));
+
+	// long result;
+	// CacheIdx curr = new CacheIdx(i,x);
+	// if (i == 0) {
+	//     result = 0;
+	// }
+	// else if (cache.containsKey(curr)) {
+	//     return cache.get(curr);
+	// }
+	// else {
+	//     Item tmp = items[i];
+	//     if (tmp.weight > x) {
+	// 	CacheIdx idx = new CacheIdx(i - 1, x);
+	// 	result = computeEntry(items, i-1,x,cache);
+	// 	cache.put(curr, result);
+
+	//     }
+	//     else {
+	// 	CacheIdx idx1 = new CacheIdx(i-1, x);
+	// 	CacheIdx idx2 = new CacheIdx(i-1, x - tmp.weight);
+	// 	long val1,val2;
+	// 	val1 = computeEntry(items, i -1, x, cache);
+	// 	val2 = computeEntry(items, i -1, x - tmp.weight, cache);
+
+	// 	result = Math.max(val1,val2 + tmp.value);
+	// 	cache.put(curr, result);
+	//     }
+	// }
+	// return result;
     }
 
     public static void main(String[] args) {
@@ -69,7 +83,7 @@ public class Knapsack2 {
 
 	    Item[] items = new Item[num+1];
 	    int idx = 1;
-	    Map<CacheIdx,Long> cache = new HashMap<>();
+	    Map<CacheIdx,Integer> cache = new HashMap<>();
 	    while ((line = reader.readLine()) != null) {
 		st = new StringTokenizer(line," ");
 		int value = Integer.parseInt(st.nextToken());
@@ -79,8 +93,13 @@ public class Knapsack2 {
 	    // System.out.println(items[idx-1]);
 	    // System.out.println(items[idx-1].hashCode());
 
-	    long result = computeEntry(items,num,capacity,cache);
-	    System.out.println(result + " " + cache.size());
+	    computeEntry(items,num,capacity,cache);
+	    // for (Map.Entry<CacheIdx,Integer> e : cache.entrySet()) {
+	    // 	System.out.print(e.getKey());
+	    // 	System.out.print(" ");
+	    // 	System.out.println(e.getValue());
+	    // }
+	    System.out.println(cache.get(new CacheIdx(num,capacity)));
 	}
 	catch (IOException e) {
 	    System.err.format("IOException: %s%n",e);
@@ -125,6 +144,14 @@ class CacheIdx {
 	return i + " " + x;
     }
 
+    @Override
+    public boolean equals(Object o) {
+	if (this == o) return true;
+	if (o == null) return false;
+	if (this.getClass() != o.getClass()) return false;
+	CacheIdx that = (CacheIdx) o;
+	return this.i == that.i && this.x == that.x;
+    }
     @Override
     public int hashCode() {
 	int result = 17;

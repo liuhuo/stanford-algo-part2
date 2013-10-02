@@ -11,6 +11,8 @@
     <property name="hamming" value="Hamming"/>
     <property name="knapsack1" value="Knapsack1"/>
     <property name="knapsack2" value="Knapsack2"/>
+    <property name="apsp" value="APSP"/>
+    <property name="tsp" value="TSP"/>
 
     <path id="classpath">
         <fileset dir="${lib}" includes="**/*.jar"/>
@@ -23,7 +25,7 @@
     </target>
 
     <target name="compile" depends="init">
-        <javac srcdir="${src}/week3" destdir="${classes}" includeAntRuntime="false" debug="true" debuglevel="lines,vars,source">
+        <javac srcdir="${src}/week5" destdir="${classes}" includeAntRuntime="false" debug="true" debuglevel="lines,vars,source">
             <classpath>
                 <path refid="classpath"/>
             </classpath>
@@ -89,6 +91,24 @@
             </classpath>
         </java>
     </target>
+
+    <target name="apsp" depends="compile">
+        <java fork="true" classname="${apsp}">
+            <classpath>
+                <path refid="classpath"/>
+            </classpath>
+            <jvmarg value="-Xmx1500m"/>
+        </java>
+    </target>
+
+    <target name="tsp" depends="compile">
+        <java fork="true" classname="${tsp}">
+            <classpath>
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+
 
     <target name="clean">
         <delete dir="${classes}"/>

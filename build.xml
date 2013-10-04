@@ -76,6 +76,7 @@
         </java>
     </target>
 
+
     <target name="knapsack1" depends="compile">
         <java fork="true" classname="${knapsack1}">
             <classpath>
@@ -106,6 +107,7 @@
             <classpath>
                 <path refid="classpath"/>
             </classpath>
+            <jvmarg value="-Xmx4099m"/>
         </java>
     </target>
 

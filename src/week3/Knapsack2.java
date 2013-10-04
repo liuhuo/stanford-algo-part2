@@ -9,10 +9,32 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class Knapsack2 {
-    private static String dataFile = "data/knapsack1.txt";
+    private static String dataFile = "data/knapsack_big.txt";
+
+    private static int explore(Item[] items, int i, int x, Map<CacheIdx,Integer> cache) {
+	Item item = items[i];
+	CacheIdx curr = new CacheIdx(i,x);
+	if (i == 0) {
+	    return 0;
+	}
+	else if (cache.containsKey(curr)) {
+	    return cache.get(curr);
+	}
+	else if (item.weight > x) {
+	    int result = explore(items, i - 1, x, cache);
+	    cache.put(curr,result);
+	    return result;
+	}
+	else {
+	    int candidate1 = explore(items, i - 1, x, cache);
+	    int candidate2 = explore(items, i - 1, x - item.weight, cache);
+	    int result = Math.max(candidate1, candidate2 + item.value);
+	    cache.put(curr, result);
+	    return result;
+	}
+    }
 
     private static void computeEntry(Item[] items, int i, int x, Map<CacheIdx,Integer> cache) {
-
 	Item item = items[i];
 	CacheIdx curr = new CacheIdx(i,x);
 	if (i == 0) {
@@ -39,36 +61,6 @@ public class Knapsack2 {
 	    int candidate2 = cache.get(idx2);
 	    cache.put(curr, Math.max(candidate1,candidate2+item.value));
 	}
-	//System.out.println(i + " " + x + " " + cache.get(curr));
-
-	// long result;
-	// CacheIdx curr = new CacheIdx(i,x);
-	// if (i == 0) {
-	//     result = 0;
-	// }
-	// else if (cache.containsKey(curr)) {
-	//     return cache.get(curr);
-	// }
-	// else {
-	//     Item tmp = items[i];
-	//     if (tmp.weight > x) {
-	// 	CacheIdx idx = new CacheIdx(i - 1, x);
-	// 	result = computeEntry(items, i-1,x,cache);
-	// 	cache.put(curr, result);
-
-	//     }
-	//     else {
-	// 	CacheIdx idx1 = new CacheIdx(i-1, x);
-	// 	CacheIdx idx2 = new CacheIdx(i-1, x - tmp.weight);
-	// 	long val1,val2;
-	// 	val1 = computeEntry(items, i -1, x, cache);
-	// 	val2 = computeEntry(items, i -1, x - tmp.weight, cache);
-
-	// 	result = Math.max(val1,val2 + tmp.value);
-	// 	cache.put(curr, result);
-	//     }
-	// }
-	// return result;
     }
 
     public static void main(String[] args) {
@@ -90,16 +82,11 @@ public class Knapsack2 {
 		int weight = Integer.parseInt(st.nextToken());
 		items[idx++] = new Item(value,weight);
 	    }
-	    // System.out.println(items[idx-1]);
-	    // System.out.println(items[idx-1].hashCode());
 
-	    computeEntry(items,num,capacity,cache);
-	    // for (Map.Entry<CacheIdx,Integer> e : cache.entrySet()) {
-	    // 	System.out.print(e.getKey());
-	    // 	System.out.print(" ");
-	    // 	System.out.println(e.getValue());
-	    // }
-	    System.out.println(cache.get(new CacheIdx(num,capacity)));
+
+	    // computeEntry(items,num,capacity,cache);
+	    // System.out.println(cache.get(new CacheIdx(num,capacity)));
+	    System.out.println(explore(items,num,capacity,cache));
 	}
 	catch (IOException e) {
 	    System.err.format("IOException: %s%n",e);
